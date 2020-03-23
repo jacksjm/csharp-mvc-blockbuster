@@ -1,5 +1,5 @@
 # CSharp: Simple MVC Blockbuster
-A mini blockbuster to exemplify the MVC structure on C# (yes likely equal the other repository :sad:, but better :glad:)
+A mini blockbuster to exemplify the MVC structure on C# (yes likely equal the other repository :sweat:, but better :grimacing:)
 
 ## Run locally
 
