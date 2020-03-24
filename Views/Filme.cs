@@ -61,11 +61,5 @@ namespace View {
             } while (filme == null);
             Console.WriteLine (filme.ToString ());
         }
-
-        /// <sumary>This method access db import.</sumary>
-        public static void Importar () {
-            FilmeController.Importar ();
-            Console.WriteLine("======= IMPORTAÇÃO DE FILMES CONCLUÍDA COM SUCESSO =======");
-        }
     }
 }

@@ -8,7 +8,7 @@ namespace Controllers {
         public static Locacao InserirLocacao(
             Cliente cliente
         ){
-            return new Locacao(cliente, DateTime.Now); 
+            return Locacao.InserirLocacao(cliente, DateTime.Now); 
         }
 
         /// <sumary>This method insert a movie on the customer rental.</sumary>
@@ -44,8 +44,8 @@ namespace Controllers {
         /// This method calculates the return date
         /// </summary>
         /// <returns>The customer's return date</returns>
-        public static DateTime GetDataDevolucao (Locacao locacao) {
-            return locacao.DtLocacao.AddDays (locacao.Cliente.Dias);
+        public static DateTime GetDataDevolucao (DateTime DtLocacao, Cliente Cliente) {
+            return DtLocacao.AddDays (Cliente.Dias);
         }
 
         /// <sumary>This method access find a customer rental.</sumary>

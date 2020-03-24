@@ -20,7 +20,7 @@ namespace Controllers {
                 dtNasc = DateTime.Now;
             }
 
-            new Cliente (
+            Cliente.InserirCliente (
                 nome,
                 dtNasc,
                 cpf,
@@ -49,11 +49,6 @@ namespace Controllers {
         /// <sumary>This method access all customers.</sumary>
         public static List<Cliente> GetClientes (){
             return Cliente.GetClientes();
-        }
-
-        /// <sumary>This method access the db import.</sumary>
-        public static void Importar () {
-            Cliente.Importar();
         }
     }
 }

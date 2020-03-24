@@ -20,18 +20,13 @@ namespace Controllers {
                 dtLancamento = DateTime.Now;
             }
 
-            new Filme(
+            Filme.InserirFilme (
                 nome,
                 dtLancamento,
                 cpf,
                 valor,
                 estoque
             );
-        }
-
-        /// <summary>This method get the movie rental quantity.</summary>
-        public static int GetQtdLocacoes (Filme filme) {
-            return filme.Locacoes.Count;
         }
 
         /// <sumary>This method access the find movie.</sumary>
@@ -42,11 +37,6 @@ namespace Controllers {
         /// <sumary>This method access all movies.</sumary>
         public static List<Filme> GetFilmes (){
             return Filme.GetFilmes();
-        }
-
-        /// <sumary>This method access the db import.</sumary>
-        public static void Importar () {
-            Filme.Importar();
         }
     }
 }

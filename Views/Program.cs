@@ -24,7 +24,6 @@ namespace csharp_mvc_blockbuster
                 Console.WriteLine ("| 6 - Listar Filmes       |");
                 Console.WriteLine ("| 7 - Consultar Filme     |");
                 Console.WriteLine ("| 8 - Consultar Locação   |");
-                Console.WriteLine ("| 9 - Importar Dados      |");
                 Console.WriteLine ("| 0 - Sair                |");
                 Console.WriteLine ("+-------------------------+");
 
@@ -60,10 +59,6 @@ namespace csharp_mvc_blockbuster
                         break;
                     case 8:
                         LocacaoView.ConsultarLocacao ();
-                        break;
-                    case 9:
-                        FilmeView.Importar();
-                        ClienteView.Importar();
                         break;
                 }
             } while (opt != 0);

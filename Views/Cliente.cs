@@ -54,11 +54,5 @@ namespace View {
             } while (cliente == null);
             Console.WriteLine (cliente.ToString ());
         }
-
-        /// <sumary>This method access db import.</sumary>
-        public static void Importar () {
-            ClienteController.Importar ();
-            Console.WriteLine("======= IMPORTAÇÃO DE CLIENTES E LOCACOES CONCLUÍDA COM SUCESSO =======");
-        }
     }
 }

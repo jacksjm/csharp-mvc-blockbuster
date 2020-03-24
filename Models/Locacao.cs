@@ -9,8 +9,10 @@ namespace Models {
         /* 
             Getters and Setters 
         */
-        /// <value>Get and Set the value of idLocacao</value>
-        public int IdLocacao { get; set; }
+        /// <value>Get and Set the value of LocacaoId</value>
+        public int LocacaoId { get; set; }
+        /// <value>Get and Set the value of cliente</value>
+        public int ClienteId { get; set; }
         /// <value>Get and Set the value of cliente</value>
         public Cliente Cliente { get; set; }
         /// <value>Get and Set the value of dtLocacao</value>
@@ -21,17 +23,24 @@ namespace Models {
         /// <summary>
         /// Constructor to Locacao object.
         /// </summary>
-        /// <param name="idLocacao">Unique rental identification</param>
+        /// <param name="LocacaoId">Unique rental identification</param>
         /// <param name="cliente">Customer object</param>
-        /// <param name="dtLocacao">Rental date</param>
-        public Locacao (Cliente cliente, DateTime dtLocacao) {
-            IdLocacao = RepositoryLocacao.GetId();
-            Cliente = cliente;
-            DtLocacao = dtLocacao;
-            Filmes = new List<Filme> ();
-            cliente.InserirLocacao (this);
+        /// /// <param name="dtLocacao">Rental date</param>
+        public static Locacao InserirLocacao (Cliente cliente, DateTime dtLocacao) {
+            Locacao locacao = new Locacao {
+                Cliente = cliente,
+                ClienteId = cliente.ClienteId,
+                DtLocacao = dtLocacao,
+                Filmes = new List<Filme> ()
+            };
 
-            RepositoryLocacao.AddLocacao (this);
+            cliente.InserirLocacao (locacao);
+
+            var db = new Context();
+            db.Locacoes.Add(locacao);
+            db.SaveChanges();
+
+            return locacao;
         }
 
         /// <summary>
@@ -40,33 +49,39 @@ namespace Models {
         /// <param name="filme">The movie object.</param>
         public void InserirFilme (Filme filme) {
             Filmes.Add (filme);
-            filme.SetarLocacao (this);
         }
 
         /// <sumary>This method determines the string convertion.</sumary>
         public override string ToString () {
-            string valor = LocacaoController.GetValorTotal(this).ToString("C2");
-            string retorno = $"Cliente: {Cliente.Nome}\n" +
+            var db = new Context();
+            Cliente cliente = (
+                    from cli in db.Clientes
+                    where cli.ClienteId == ClienteId
+                    select cli).First();
+            // string valor = LocacaoController.GetValorTotal(this).ToString("C2");
+            string retorno = $"Cliente: {cliente.Nome}\n" +
                 $"Data da Locacao: {DtLocacao}\n" +
-                $"Valor: {valor}\n" +
-                $"Data de Devolucao: {LocacaoController.GetDataDevolucao(this)}\n" +
+                $"Data de Devolucao: {LocacaoController.GetDataDevolucao(DtLocacao, cliente)}\n" +
                 "   Filmes:\n";
 
-            if (Filmes.Count > 0) {
+            /*if (Filmes.Count > 0) {
                 Filmes.ForEach (
-                    filme => retorno += $"    Id: {filme.IdFilme} - " +
+                    filme => retorno += $"    Id: {filme.FilmeId} - " +
                     $"Nome: {filme.NomeFilme}\n"
                 );
             } else {
                 retorno += "    Não há filmes";
-            }
+            }*/
 
             return retorno;
         }
 
         /// <sumary>This method find a customer rental.</sumary>
-        public static Locacao GetLocacao(int idLocacao){
-            return RepositoryLocacao.Locacoes().Find (locacao => locacao.IdLocacao == idLocacao);
+        public static Locacao GetLocacao(int LocacaoId){
+            var db = new Context();
+            return (from locacao in db.Locacoes
+                where locacao.LocacaoId == LocacaoId
+                select locacao).First();
         }
 
     }

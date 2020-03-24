@@ -15,12 +15,12 @@ namespace View {
             // Search the costumer with id
             do {
                 Console.WriteLine ("Informe o id do cliente: ");
-                int idCliente = Convert.ToInt32 (Console.ReadLine ());
+                int ClienteId = Convert.ToInt32 (Console.ReadLine ());
                 cliente = null; // Reset the value to avoid garbage
 
                 // Try to locate the information in the collection
                 try {
-                    cliente = ClienteController.GetCliente(idCliente);
+                    cliente = ClienteController.GetCliente(ClienteId);
                     if (cliente == null) { // If the information is not present, a message is returned
                         Console.WriteLine ("Cliente não localizado, favor digitar outro id.");
                     }
