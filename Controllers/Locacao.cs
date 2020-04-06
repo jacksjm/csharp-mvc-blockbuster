@@ -25,10 +25,11 @@ namespace Controllers {
         /// <returns>The value of the rental.</returns>
         public static double GetValorTotal (Locacao locacao) {
             double valorTotal = 0;
+            
+            foreach (FilmeLocacao filme in locacao.Filmes){
+                valorTotal += filme.Filme.Valor;
+            }
 
-            locacao.Filmes.ForEach (
-                filme => valorTotal += filme.Valor
-            );
             return valorTotal;
         }
 

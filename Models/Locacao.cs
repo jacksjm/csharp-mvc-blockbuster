@@ -17,8 +17,8 @@ namespace Models {
         public Cliente Cliente { get; set; }
         /// <value>Get and Set the value of dtLocacao</value>
         public DateTime DtLocacao { get; set; }
-        /// <value>Get and Set the value of idCliente</value>
-        public List<Filme> Filmes { get; set; }
+        /// <value>Get and Set the value of Filmes</value>
+        public ICollection<FilmeLocacao> Filmes { get; set; }
 
         /// <summary>
         /// Constructor to Locacao object.
@@ -31,7 +31,7 @@ namespace Models {
                 Cliente = cliente,
                 ClienteId = cliente.ClienteId,
                 DtLocacao = dtLocacao,
-                Filmes = new List<Filme> ()
+                Filmes = new List<FilmeLocacao> ()
             };
 
             cliente.InserirLocacao (locacao);
@@ -48,7 +48,14 @@ namespace Models {
         /// </summary>
         /// <param name="filme">The movie object.</param>
         public void InserirFilme (Filme filme) {
-            Filmes.Add (filme);
+            FilmeLocacao filmeLocacao = new FilmeLocacao();
+            filmeLocacao.FilmeId = filme.FilmeId;
+            filmeLocacao.Filme = filme;
+            filmeLocacao.LocacaoId = LocacaoId;
+            filmeLocacao.Locacao = this;
+
+            Filmes.Add (filmeLocacao);
+            filme.Locacoes.Add(filmeLocacao);
         }
 
         /// <sumary>This method determines the string convertion.</sumary>

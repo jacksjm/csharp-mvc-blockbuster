@@ -20,8 +20,10 @@ namespace Models {
         public double Valor { get; set; }
         /// <value>Get and Set the value of qtdEstoque</value>
         public int QtdEstoque { get; set; }
-
+        /// <value>Get and Set the value of Locacoes</value>
+        public ICollection<FilmeLocacao> Locacoes { get; set; }
         /// <summary>Constructor to Filme object.</summary>
+
         public static void InserirFilme (string nomeFilme, DateTime dtLancamento, string sinopse, double valor, int qtdEstoque) {
             Filme filme = new Filme {
                 NomeFilme = nomeFilme,
