@@ -24,6 +24,9 @@ namespace Models {
         public ICollection<FilmeLocacao> Locacoes { get; set; }
         /// <summary>Constructor to Filme object.</summary>
 
+        public Filme(){
+            Locacoes = new List<FilmeLocacao>();
+        }
         public static void InserirFilme (string nomeFilme, DateTime dtLancamento, string sinopse, double valor, int qtdEstoque) {
             Filme filme = new Filme {
                 NomeFilme = nomeFilme,

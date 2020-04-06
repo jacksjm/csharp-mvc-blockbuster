@@ -23,7 +23,11 @@ namespace Models {
         /// <value>Get and Set the value of dias</value>
         public int Dias { get; set; }
         /// <value>Get and Set the value of locacoes</value>
-        public List<Locacao> Locacoes { get; set; }
+        public ICollection<Locacao> Locacoes { get; set; }
+
+        public Cliente(){
+            Locacoes = new List<Locacao>();
+        }
 
         /// <summary>Constructor to Cliente object.</summary>
         public static void InserirCliente (string nome, DateTime dtNasc, string cpf, int dias) {

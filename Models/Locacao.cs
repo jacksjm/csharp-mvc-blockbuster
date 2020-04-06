@@ -14,11 +14,15 @@ namespace Models {
         /// <value>Get and Set the value of cliente</value>
         public int ClienteId { get; set; }
         /// <value>Get and Set the value of cliente</value>
-        public Cliente Cliente { get; set; }
+        public virtual Cliente Cliente { get; set; }
         /// <value>Get and Set the value of dtLocacao</value>
         public DateTime DtLocacao { get; set; }
         /// <value>Get and Set the value of Filmes</value>
         public ICollection<FilmeLocacao> Filmes { get; set; }
+
+        public Locacao(){
+            Filmes = new List<FilmeLocacao>();
+        }
 
         /// <summary>
         /// Constructor to Locacao object.
@@ -28,7 +32,6 @@ namespace Models {
         /// /// <param name="dtLocacao">Rental date</param>
         public static Locacao InserirLocacao (Cliente cliente, DateTime dtLocacao) {
             Locacao locacao = new Locacao {
-                Cliente = cliente,
                 ClienteId = cliente.ClienteId,
                 DtLocacao = dtLocacao,
                 Filmes = new List<FilmeLocacao> ()
@@ -48,14 +51,16 @@ namespace Models {
         /// </summary>
         /// <param name="filme">The movie object.</param>
         public void InserirFilme (Filme filme) {
+            var db = new Context();
+
             FilmeLocacao filmeLocacao = new FilmeLocacao();
             filmeLocacao.FilmeId = filme.FilmeId;
-            filmeLocacao.Filme = filme;
             filmeLocacao.LocacaoId = LocacaoId;
-            filmeLocacao.Locacao = this;
-
+            db.FilmeLocacao.Add(filmeLocacao);
+            db.SaveChanges();
             Filmes.Add (filmeLocacao);
             filme.Locacoes.Add(filmeLocacao);
+            
         }
 
         /// <sumary>This method determines the string convertion.</sumary>
@@ -71,14 +76,13 @@ namespace Models {
                 $"Data de Devolucao: {LocacaoController.GetDataDevolucao(DtLocacao, cliente)}\n" +
                 "   Filmes:\n";
 
-            /*if (Filmes.Count > 0) {
-                Filmes.ForEach (
-                    filme => retorno += $"    Id: {filme.FilmeId} - " +
-                    $"Nome: {filme.NomeFilme}\n"
-                );
+            if (Filmes.Count > 0) {
+                foreach (FilmeLocacao filme in Filmes) {
+                    retorno += $"    Id: {filme.Filme.FilmeId} - Nome: {filme.Filme.NomeFilme}\n";
+                }
             } else {
                 retorno += "    Não há filmes";
-            }*/
+            }
 
             return retorno;
         }

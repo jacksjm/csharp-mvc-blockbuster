@@ -34,9 +34,9 @@ namespace Controllers {
         public static int GetQtdFilmes (Cliente cliente) {
             int qtdFilmes = 0;
 
-            cliente.Locacoes.ForEach (
-                locacao => qtdFilmes += locacao.Filmes.Count
-            );
+            foreach(Locacao locacao in cliente.Locacoes){
+                qtdFilmes += locacao.Filmes.Count;
+            }
 
             return qtdFilmes;
         }
