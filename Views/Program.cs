@@ -9,9 +9,9 @@ namespace csharp_mvc_blockbuster
             The Main class
             The entrance of the system
         */
-        static void Main (string[] args) {
+        static void Main () {
             Console.WriteLine ("============ Blockbuster! ============ ");
-            int opt = 0;
+            int opt;
             do {
                 // Show menu options
                 Console.WriteLine ("+-------------------------+");
