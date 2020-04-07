@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Controllers;
 using Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models {
     public class Locacao {
@@ -16,6 +17,7 @@ namespace Models {
         /// <value>Get and Set the value of cliente</value>
         public virtual Cliente Cliente { get; set; }
         /// <value>Get and Set the value of dtLocacao</value>
+        [Required]
         public DateTime DtLocacao { get; set; }
         /// <value>Get and Set the value of Filmes</value>
         public ICollection<FilmeLocacao> Filmes { get; set; }
@@ -53,9 +55,11 @@ namespace Models {
         public void InserirFilme (Filme filme) {
             var db = new Context();
 
-            FilmeLocacao filmeLocacao = new FilmeLocacao();
-            filmeLocacao.FilmeId = filme.FilmeId;
-            filmeLocacao.LocacaoId = LocacaoId;
+            FilmeLocacao filmeLocacao = new FilmeLocacao(){
+                FilmeId = filme.FilmeId,
+                LocacaoId = LocacaoId
+            };
+
             db.FilmeLocacao.Add(filmeLocacao);
             db.SaveChanges();
             Filmes.Add (filmeLocacao);
@@ -70,19 +74,30 @@ namespace Models {
                     from cli in db.Clientes
                     where cli.ClienteId == ClienteId
                     select cli).First();
-            // string valor = LocacaoController.GetValorTotal(this).ToString("C2");
             string retorno = $"Cliente: {cliente.Nome}\n" +
                 $"Data da Locacao: {DtLocacao}\n" +
-                $"Data de Devolucao: {LocacaoController.GetDataDevolucao(DtLocacao, cliente)}\n" +
-                "   Filmes:\n";
+                $"Data de Devolucao: {LocacaoController.GetDataDevolucao(DtLocacao, cliente)}\n";
 
-            if (Filmes.Count > 0) {
-                foreach (FilmeLocacao filme in Filmes) {
-                    retorno += $"    Id: {filme.Filme.FilmeId} - Nome: {filme.Filme.NomeFilme}\n";
+            double valorTotal = 0;
+            string strFilmes = "";
+
+            IEnumerable<int> filmes = 
+                from filme in db.FilmeLocacao
+                    where filme.LocacaoId == LocacaoId
+                    select filme.FilmeId;
+            if (filmes.Count() > 0) {
+                foreach (int id in filmes) {
+                    Filme filme = Filme.GetFilme(id);
+                    strFilmes += $"    Id: {filme.FilmeId} - Nome: {filme.NomeFilme}\n";
+                    valorTotal += filme.Valor;
                 }
             } else {
-                retorno += "    Não há filmes";
+                strFilmes += "    Não há filmes";
             }
+
+            retorno += $"Valor Total: {valorTotal:C2}\n" +
+                "   Filmes:\n" +
+                strFilmes;
 
             return retorno;
         }

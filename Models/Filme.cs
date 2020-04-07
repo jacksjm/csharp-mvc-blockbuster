@@ -61,10 +61,15 @@ namespace Models {
                 return $"Id: {FilmeId} - Nome: {NomeFilme}";
             }
 
-            string valor = Valor.ToString("C2");
+            var db = new Context();
+            int cnt = 
+                (from filme in db.FilmeLocacao
+                    where filme.FilmeId == FilmeId
+                    select filme.FilmeId).Count();
 
             return $"Nome: {NomeFilme}\n" +
-                $"Valor: {valor}\n";
+                $"Valor: {Valor:C2}\n" +
+                $"Quantidade de Locações: {cnt}\n";
         }
     }
 }

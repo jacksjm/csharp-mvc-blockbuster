@@ -66,16 +66,15 @@ namespace Models {
 
         /// <sumary>This method determines the string convertion.</sumary>
         public string ToString (bool simple = false) {
-            if (simple) {
-                string retorno = $"Id: {ClienteId} - Nome: {Nome}\n" +
-                    "   Locações: \n";
-                var db = new Context();
-
-                List<Locacao> LocacoesList = (
+            Context db = new Context();
+            List<Locacao> LocacoesList = (
                     from locacao in db.Locacoes
                     where locacao.ClienteId == ClienteId
                     select locacao).ToList();
-                    
+
+            if (simple) {
+                string retorno = $"Id: {ClienteId} - Nome: {Nome}\n" +
+                    "   Locações: \n";
                 if (LocacoesList.Count > 0) {
                     LocacoesList.ForEach (
                         locacao => retorno += $"    Id: {locacao.LocacaoId} - " +
@@ -89,11 +88,18 @@ namespace Models {
                 return retorno;
             }
 
+            int qtdFilmes = 0;
+            foreach(Locacao locacao in LocacoesList){
+                qtdFilmes += (from filme in db.FilmeLocacao
+                    where filme.LocacaoId == locacao.LocacaoId
+                    select filme).Count();
+            }
+
             string dtNasc = DtNasc.ToString("dd/MM/yyyy");
 
             return $"Nome: {Nome}\n" +
                 $"Data de Nasciment: {dtNasc}\n" +
-                $"Qtd de Filmes: {ClienteController.GetQtdFilmes(this)}";
+                $"Qtd de Filmes: {qtdFilmes}";
         }
 
     }

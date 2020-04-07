@@ -28,19 +28,6 @@ namespace Controllers {
             );
 
         }
-
-        /// <summary>This method get the movies quantitie.</summary>
-        /// <returns>Number of films rented by the customer.</returns>
-        public static int GetQtdFilmes (Cliente cliente) {
-            int qtdFilmes = 0;
-
-            foreach(Locacao locacao in cliente.Locacoes){
-                qtdFilmes += locacao.Filmes.Count;
-            }
-
-            return qtdFilmes;
-        }
-
         /// <sumary>This method access the find a customer.</sumary>
         public static Cliente GetCliente (int idCliente){
             return Cliente.GetCliente(idCliente);
